@@ -78,8 +78,11 @@ class Game:
                 else:
                     pass
 
-                self.move_snake()
+                if not self.move_snake():
+                    break
         except KeyboardInterrupt:
+            pass
+        finally:
             print("Your score is: " + str(self.score))
 
 
