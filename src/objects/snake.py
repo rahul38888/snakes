@@ -1,20 +1,28 @@
-from linked_list import LinkedList, Node
-from cell import Cell
-from direction import Direction
-from cell_state import CellState
+from src.objects.linked_list import LinkedList, Node
+from src.objects.cell import *
+
 
 class Snake:
     def __init__(self, linked_list: LinkedList):
         self.linked_list = linked_list
         root = self.linked_list.head
-        while root is not None:
-            root.data.state = CellState.SNAKE
 
     def move(self, cell: Cell):
-        self.linked_list.add(cell)
-        cell.state = CellState.SNAKE
-        old_cell = self.linked_list.remove()
-        old_cell.state = CellState.EMPTY
+        self.linked_list.add_head(cell)
+        old_tail = self.linked_list.remove()
+        return old_tail
 
     def check_collision(self, cell: Cell):
         return cell.state is CellState.SNAKE
+
+    def get_head(self):
+        return self.linked_list.head
+
+    def get_tail(self):
+        return self.linked_list.tail
+
+    def add_cell(self, cell: Cell, tail):
+        if tail:
+            self.linked_list.add_tail(cell)
+        else:
+            self.linked_list.add_head(cell)

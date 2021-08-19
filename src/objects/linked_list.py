@@ -1,13 +1,13 @@
-from cell import Cell
+from src.objects.cell import Cell
 
 
 class LinkedList:
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.head: Node = None
+        self.tail: Node = None
         self.size = 0
 
-    def add(self, cell: Cell):
+    def add_head(self, cell: Cell):
         node = Node()
         node.data = cell
         if self.size == 0:
@@ -19,7 +19,7 @@ class LinkedList:
             self.head = node
         self.size += 1
 
-    def addTail(self, cell: Cell):
+    def add_tail(self, cell: Cell):
         node = Node()
         node.data = cell
         if self.size == 0:
@@ -44,6 +44,6 @@ class LinkedList:
 
 class Node:
     def __init__(self):
-        self.data = None
-        self.next = None
-        self.prev = None
+        self.data: Cell = None
+        self.next: Node = None
+        self.prev: Node = None
