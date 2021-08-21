@@ -14,7 +14,6 @@ def input(key):
 if __name__ == '__main__':
     app = Ursina()
 
-
     matrix = [[Entity(model="sphere", color=color.red, scale=(0.5, 0.5, 0.5),
                       position=((j - width // 2) * 0.5, (i - height // 2) * 0.5), visible=True)
                for j in range(width)] for i in range(height)]
