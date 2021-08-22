@@ -1,17 +1,15 @@
 import enum
-from ursina import Entity, color
 
 
 class CellState(enum.Enum):
-    EMPTY = ("quad", False, None)
-    SNAKE = ("sphere", True, color.green)
-    FOOD = ("sphere", True, color.orange)
+    EMPTY = enum.auto()
+    SNAKE = enum.auto()
+    FOOD = enum.auto()
 
 
 class Cell:
-    def __init__(self, x, y, state: CellState, entity: Entity):
+    def __init__(self, x, y, state: CellState):
         self.x = x
         self.y = y
         self.state = state
-        self.entity: Entity = entity
 

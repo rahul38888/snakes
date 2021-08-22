@@ -3,10 +3,9 @@ from src.objects.snake import Snake
 from src.objects.direction import *
 from src.objects.linked_list import LinkedList
 from src.objects.cell import *
-from src.engine.render_engine import RenderEngine
 
 from enum import Enum
-from ursina import Text, destroy
+from os import system
 
 
 class Game:
@@ -15,32 +14,6 @@ class Game:
         self.direction = init_dir
         self.score = 0
         self.state = GameState.RUNNING
-
-        self.score_board = Text(text="Score: " + str(self.score),
-                                origin=(-self.board.width // 2, self.board.height // 2 + 1),
-                                background=True, size=1)
-        self.end_board = Text(text="", origin=(0, -2), background=True, size=1, visible=False, z=-1)
-
-        def update():
-            self.move_snake()
-
-        def input(key):
-            if self.state is not GameState.RUNNING:
-                return
-            print(key)
-            if key == "w up" or key == "s up" or key == "d up" or key == "a up":
-                self.change_direction(Keymap(key[0]))
-            elif key == "escape up":
-                self.state = GameState.TERMINATED
-
-            if not self.move_snake():
-                self.state = GameState.LOST
-
-            if self.state is not GameState.RUNNING:
-                self.end_board.text = self.state.value + " Score is " + str(self.score)
-                self.end_board.visible = True
-
-        self.render_engine = RenderEngine(input, update)
 
         snake_length = LinkedList()
         for i in range(init_size):
@@ -60,10 +33,6 @@ class Game:
             self.snake.add_cell(new_head, False)
             self.board.set_state(new_head, CellState.SNAKE)
             self.score += 1
-            destroy(self.score_board)
-            self.score_board = Text(text="Score: " + str(self.score),
-                                    origin=(-self.board.width // 2, self.board.height // 2 + 1),
-                                    background=True, size=1)
             self.init_food()
         else:
             self.board.set_state(new_head, CellState.SNAKE)
@@ -81,7 +50,8 @@ class Game:
             self.direction = turn_map[keymap]
 
     def render(self):
-        print("=" * (self.board.width + 4))
+        # system('clear')
+        screen = "=" * (self.board.width + 4)
         for i in range(self.board.height):
             line = ""
             for j in range(self.board.width):
@@ -92,15 +62,31 @@ class Game:
                     if cell is self.snake.get_head():
                         line += "0"
                     else:
-                        line += "O"
+                        line += "\u2588"
                 else:
                     line += "@"
-            print("||" + line + "||")
+            screen += "\n||" + line + "||"
 
-        print("=" * (self.board.width + 4))
+        screen += "\n" + "=" * (self.board.width + 4)
+        print(screen, end="\r")
 
     def run(self):
-        self.render_engine.run()
+        movement_keys = {Keymap.UP.value, Keymap.DOWN.value, Keymap.RIGHT.value, Keymap.LEFT.value}
+        try:
+            while True:
+                self.render()
+                command = input()
+                if movement_keys.__contains__(command):
+                    self.change_direction(Keymap(command))
+                else:
+                    pass
+
+                if not self.move_snake():
+                    break
+        except KeyboardInterrupt:
+            pass
+        finally:
+            print("Your score is: " + str(self.score))
 
 
 class GameState(Enum):
