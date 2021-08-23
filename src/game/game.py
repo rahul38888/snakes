@@ -60,3 +60,4 @@ class GameState(Enum):
     LOST = "You lost!"
     RUNNING = "Running"
     TERMINATED = "Ended!"
+    PAUSED = "Paused ..."

@@ -1,5 +1,3 @@
-from src.game.game import Game
-
 from src.engine.asciimatics_engine import AsciimaticsEngine
 
 
