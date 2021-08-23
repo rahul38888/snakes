@@ -13,3 +13,5 @@ class Cell:
         self.y = y
         self.state = state
 
+    def __str__(self):
+        return "Cell[" + str(self.x) + ", " + str(self.y) + ", " + self.state.name + "]"

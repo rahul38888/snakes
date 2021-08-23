@@ -5,15 +5,17 @@ from src.objects.linked_list import LinkedList
 from src.objects.cell import *
 
 from enum import Enum
-from os import system
 
 
 class Game:
-    def __init__(self, size, init_pos, init_size, init_dir):
+    def __init__(self, size, init_pos, init_size=3, init_dir=Direction.UP, speed=3, acceleration=0.1):
         self.board = Board(size[0], size[1])
         self.direction = init_dir
         self.score = 0
         self.state = GameState.RUNNING
+
+        self.speed = speed
+        self.acceleration = acceleration
 
         snake_length = LinkedList()
         for i in range(init_size):
@@ -34,6 +36,7 @@ class Game:
             self.board.set_state(new_head, CellState.SNAKE)
             self.score += 1
             self.init_food()
+            self.increase_speed(self.acceleration)
         else:
             self.board.set_state(new_head, CellState.SNAKE)
             old_tail = self.snake.move(new_head)
@@ -49,44 +52,8 @@ class Game:
         if turn_map.__contains__(keymap):
             self.direction = turn_map[keymap]
 
-    def render(self):
-        # system('clear')
-        screen = "=" * (self.board.width + 4)
-        for i in range(self.board.height):
-            line = ""
-            for j in range(self.board.width):
-                cell = self.board.get_cell(j, i)
-                if cell.state is CellState.EMPTY:
-                    line += " "
-                elif cell.state is CellState.SNAKE:
-                    if cell is self.snake.get_head():
-                        line += "0"
-                    else:
-                        line += "\u2588"
-                else:
-                    line += "@"
-            screen += "\n||" + line + "||"
-
-        screen += "\n" + "=" * (self.board.width + 4)
-        print(screen, end="\r")
-
-    def run(self):
-        movement_keys = {Keymap.UP.value, Keymap.DOWN.value, Keymap.RIGHT.value, Keymap.LEFT.value}
-        try:
-            while True:
-                self.render()
-                command = input()
-                if movement_keys.__contains__(command):
-                    self.change_direction(Keymap(command))
-                else:
-                    pass
-
-                if not self.move_snake():
-                    break
-        except KeyboardInterrupt:
-            pass
-        finally:
-            print("Your score is: " + str(self.score))
+    def increase_speed(self, delta):
+        self.speed += delta
 
 
 class GameState(Enum):
