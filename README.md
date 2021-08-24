@@ -1,6 +1,6 @@
 # Snakes
 
-The classic snake game using made using [asciimatics](https://github.com/peterbrittain/asciimatics)
+The classic snake game made using [asciimatics](https://github.com/peterbrittain/asciimatics)
 
 ## Welcome screen
 ![welcome.png](https://github.com/rahul38888/snakes/blob/main/screenshots/welcome.png?raw=true)
